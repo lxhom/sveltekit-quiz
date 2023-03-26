@@ -6,7 +6,7 @@
 //   line breaks. Even ![Images](https://placehold.co/200x100?text=Images).
 // questions:
 // - name: You stupid
-//   desc: Whats 9+10?
+//   desc: What's 9+10?
 //   type: choice
 //   answers:
 //     A: 19
@@ -52,7 +52,7 @@ export interface Choice {
 export interface MultipleChoice {
     type: 'multiple-choice'
     answers: Record<string, string>
-    correct: string[]
+    correct: Record<string, boolean>
 }
 
 export interface Text {
