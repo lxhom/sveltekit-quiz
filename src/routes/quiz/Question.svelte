@@ -52,7 +52,7 @@
         } else if (q.type === "text-complete") {
             let ok = true
             for (let i in arrayAnswer) {
-                if (arrayAnswer[i] !== gap_possibilities[i]) {
+                if (normalize(arrayAnswer[i]) !== normalize(gap_possibilities[i])) {
                     ok = false
                     incorrect[i] = gap_possibilities[i]
                 } else {
