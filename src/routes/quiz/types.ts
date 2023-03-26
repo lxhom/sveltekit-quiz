@@ -31,6 +31,10 @@
 // - name: Text input prompt
 //   type: text
 //   correct: Hello World
+// - name: Lückentext
+//   type: text-complete
+//   text: |
+//     1 {2} 3 {4} 5 6 {7} 8 9
 
 export interface Quiz {
     name: string
@@ -60,4 +64,9 @@ export interface Text {
     correct: string
 }
 
-export type Question = QuestionMeta & (Choice | MultipleChoice | Text)
+export interface TextComplete {
+    type: 'text-complete'
+    text: string
+}
+
+export type Question = QuestionMeta & (Choice | MultipleChoice | Text | TextComplete)

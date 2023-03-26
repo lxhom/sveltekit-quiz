@@ -12,9 +12,20 @@
     let correct = []
     let incorrect = []
 
-
     let textAnswer = ""
     let objectAnswer = {}
+    let arrayAnswer = []
+
+    let strings = []
+    let gap_possibilities = []
+    if (q.type === "text-complete") {
+        let re = /([^{]*)\{([^}]*)}/g
+        for (let match of q.text.matchAll(re)) {
+            strings.push(match[1])
+            gap_possibilities.push(match[2])
+        }
+        strings.push(q.text.slice(q.text.lastIndexOf("}") + 1))
+    }
 
     let btn = () => {
         if (answered) return $pos += 1
@@ -38,6 +49,17 @@
                 (ok ? correct : incorrect)[id] = true
             }
             $score += correct.every(x => x) ? 1 : 0
+        } else if (q.type === "text-complete") {
+            let ok = true
+            for (let i in arrayAnswer) {
+                if (arrayAnswer[i] !== gap_possibilities[i]) {
+                    ok = false
+                    incorrect[i] = gap_possibilities[i]
+                } else {
+                    correct[i] = true
+                }
+            }
+            $score += ok ? 1 : 0
         }
         correct = correct
         incorrect = incorrect
@@ -48,7 +70,6 @@
 
 <h2 class="text-2xl font-bold mt-4">{q.name}</h2>
 {#if q.desc}<p>{@html md(q.desc)}</p>{/if}
-
 
 <div class="my-4">
     {#if q.type === "text"}
@@ -81,6 +102,22 @@
                     {JSON.stringify(id)}
                 </label>
             </div>
+        {/each}
+    {/if}
+
+    {#if q.type === "text-complete"}
+        {#each strings as str, i}
+            {@html md(str).replace('<p>', '').replace('</p>', '')}
+            {#if gap_possibilities[i]}
+                <select bind:value={arrayAnswer[i]} class="select select-bordered select-sm w-24 inline-block"
+                        class:select-error={incorrect[i]} class:select-success={correct[i]}>
+                    <option value="" disabled selected>Choose...</option>
+                    {#each gap_possibilities as choice}
+                        <option value="{choice}">{choice}</option>
+                    {/each}
+                </select>&nbsp;
+                {#if incorrect[i]}<span>(Correct: {incorrect[i]}) </span>{/if}
+            {/if}
         {/each}
     {/if}
 </div>
