@@ -99,7 +99,6 @@
                     <span class="label-text">{@html md(choice)}</span>
                     <input type="checkbox" class="checkbox" bind:checked={objectAnswer[id]}
                            class:checkbox-error={incorrect[id]} class:checkbox-success={correct[id]}/>
-                    {JSON.stringify(id)}
                 </label>
             </div>
         {/each}
